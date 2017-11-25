@@ -228,7 +228,7 @@ print "Plotting the Branch T/NT Phase data"
 for i, key in enumerate(sorted(TNTcount.iterkeys())):
 	if len(TNTcount[key]) < 5:	# no need to plot cold branches
 		continue
-	trace1 = go.Scatter(x = range(len(TNTcount[key])), y=TNTcount[key], line=dict(shape='hv'))
+	trace1 = go.Scatter(x = range(len(TNTcount[key])), y=TNTcount[key], line=dict(shape='hv'), mode='markers')
 	data = [trace1]
 	percentage = takenCount[key]*100/frequency[key]
 	layout = go.Layout(
