@@ -8,7 +8,9 @@ import plotly
 import plotly.graph_objs as go
 
 if (len(sys.argv)!=3):
-        print ("Usage: perf script --itrace=i1ns | ./map.py ./a.out identifier")
+        print ("Usage: perf script --itrace=i10ns -Ftime,ip | ./map.py ./a.out identifier")
+        print ("Or to profile")
+        print ("Usage: perf script --itrace=i10ns -Ftime,ip | python -m cProfile -s cumtime ./map.py ./a.out identifier")
         sys.exit(0)
 
 branchaddrdict={}
@@ -63,14 +65,15 @@ for key in branchaddrdict.iterkeys():
 
 print "Processing the perf trace"
 
-globalmap = open("globalmap"+"-"+sys.argv[2]+".txt",'w') 
+# globalmap = open("globalmap"+"-"+sys.argv[2]+".txt",'w') 
 for line in sys.stdin:
 	trace = line.split()
-	if len(trace) < 7:
+	if len(trace) < 2:
 		continue
 
-	adr = int(trace[6], 16)
-	timeCurrent = int(Decimal(trace[3].strip(":"))*timeMultiplier)
+	adr = int(trace[1], 16)
+	# timeCurrent = int(Decimal(trace[0].strip(":"))*timeMultiplier)
+	timeCurrent = int(trace[0].strip(":").replace('.', ''))
 
 	if timeStart == 0:
 		timeStart = timeCurrent
@@ -94,12 +97,12 @@ for line in sys.stdin:
 		if adr == int(branchaddrdict[lastBranch].split()[1], 16):		# taken branch  curr adr = target of lastBranch
 			takenCount[lastBranch] = takenCount[lastBranch] + 1
 			TNTcount[lastBranch].append(2);
-			globalmap.write(str(timeLast) + "\t" + format(lastBranch, "x") + "\t1\n") 
+			# globalmap.write(str(timeLast) + "\t" + format(lastBranch, "x") + "\t1\n") 
 
 		else:		# not taken branch
 			nottakenCount[lastBranch] = nottakenCount[lastBranch] + 1
 			TNTcount[lastBranch].append(1);
-			globalmap.write(str(timeLast) + "\t" + format(lastBranch, "x") + "\t0\n") 
+			# globalmap.write(str(timeLast) + "\t" + format(lastBranch, "x") + "\t0\n") 
 
 	# Branch exec frequency
 	if adr in branchaddrdict:		# branch executed ... could be T or NT
@@ -126,7 +129,7 @@ print "Done processing the perf trace"
 print "\n\nBranch\tFrequency\tTaken\tNotTaken"
 for key, value in sorted(frequency.iteritems()):
 	print format(int(key), 'x'), "\t", value, "\t", takenCount[key], "\t", nottakenCount[key]
-globalmap.close()
+# globalmap.close()
 
 
 print "Making Graphs"
