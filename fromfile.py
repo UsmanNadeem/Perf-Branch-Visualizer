@@ -13,7 +13,7 @@ import operator
 print sys.argv
 if (len(sys.argv)!=3):
 		# print ("Usage: perf script --itrace=i100ns -Ftime,ip | ./map.py ./a.out a.out100ns")
-		print ("Usage: perf script --itrace=i1us -i perf.data -s ./map.py ./a.out a.out100ns")
+		print ("Usage: ./fromfile.py ./a.out a.out100ns")
 		# print ("Or to profile")
 		# print ("Usage: perf script --itrace=i10ns -Ftime,ip | python -m cProfile -s cumtime ./map.py ./a.out identifier")
 		sys.exit(0)
