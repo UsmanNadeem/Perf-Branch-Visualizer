@@ -13,6 +13,8 @@ import operator
 sys.path.append(os.environ['PERF_EXEC_PATH'] + \
 		'/scripts/python/Perf-Trace-Util/lib/Perf/Trace')
 
+# sys.path.append('/home/usman/Desktop/kernelPToct17/linux-4.14-rc4/tools/perf/scripts/python/Perf-Trace-Util/lib/Perf/Trace')
+
 from perf_trace_context import *
 from EventClass import *
 
@@ -20,19 +22,22 @@ def trace_begin():
 	print sys.argv
 
 
-foldername = sys.argv[2]
 if (len(sys.argv)!=3):
-		print ("Usage: perf script --itrace=i100ns -Ftime,ip | ./map.py ./a.out a.out100ns")
-		print ("Or to profile")
-		print ("Usage: perf script --itrace=i10ns -Ftime,ip | python -m cProfile -s cumtime ./map.py ./a.out identifier")
+		# print ("Usage: perf script --itrace=i100ns -Ftime,ip | ./map.py ./a.out a.out100ns")
+		print ("Usage: perf script --itrace=i1us -i perf.data -s ./map.py ./a.out a.out100ns")
+		# print ("Or to profile")
+		# print ("Usage: perf script --itrace=i10ns -Ftime,ip | python -m cProfile -s cumtime ./map.py ./a.out identifier")
 		sys.exit(0)
 
+foldername = sys.argv[2]
+# inputFile = open(foldername+".txt" ,'r') 
+		
 branchaddrdict={}
 
 takenCount = {}
 nottakenCount = {}
 TNTcount = {}
-#unconditionalBranches = ["jmpq", "callq", "retq"]
+# unconditionalBranches = ["jmpq", "callq", "retq"]
 conditionalBranches = ["jns", "js", "jnz", "jz", "jno", "jo", "jbe", "jb", "jle", "jl", "jae", "ja", "jge", "jg", "jne", "je", "jnae", "jc", "jnc", "jnb", "jna", "jnbe", "jnge", "jnl", "jng", "jnle", "jp", "jpe", "jnp", "jpo", "jcxz", "jecxz"]
 mina = 0xffffffffffffffff
 maxa = 0
